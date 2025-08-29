@@ -1,0 +1,21 @@
+# Виртуальное окружение
+.venv/
+venv/
+
+# База данных
+db.sqlite3
+
+# Статические файлы
+staticfiles/
+
+# Кэш и временные файлы
+__pycache__/
+*.py[cod]
+*.log
+
+# Секреты
+.env
+
+# IDE (например, PyCharm)
+.idea/
+.vscode/
