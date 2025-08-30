@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
     <title>Главная</title>
 </head>
 <body>
     <h1>Привіт из Django!</h1>
+    {% for post in posts_list %}
+        <h2>{{post.title}}</h2>
+        <p>{{post.text}}</p>
+        {{post.author}}
+    {% endfor %}
+
+
 </body>
 </html>
