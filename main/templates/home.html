@@ -6,11 +6,11 @@
 </head>
 <body>
     {% for post in posts_list %}
-        {{post.title}}
-        {{post.text}}
-        {{post.author}}
+        <div>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.text }}</p>
+            <small>{{ post.author }}</small>
+        </div>
     {% endfor %}
-
-
 </body>
 </html>
