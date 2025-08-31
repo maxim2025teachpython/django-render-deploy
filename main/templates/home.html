@@ -5,6 +5,8 @@
     <title>ukrainka</title>
 </head>
 <body>
+    <p>Шаблон загружен!</p>
+    <p>Количество постов: {{ posts_list|length }}</p>
     {% for post in posts_list %}
         <div>
             <h2>{{ post.title }}</h2>
@@ -13,4 +15,5 @@
         </div>
     {% endfor %}
 </body>
+
 </html>
