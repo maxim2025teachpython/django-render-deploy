@@ -5,21 +5,10 @@
     <title>ukrainka</title>
 </head>
 <body>
-    <h1>Добро пожаловать!</h1>
-
-    {% if posts_list %}
-        {% for post in posts_list %}
-            <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
-                <h2>Заголовок: {{ post.title }}</h2>
-                <p>Текст: {{ post.text }}</p>
-                <p>Автор: "{{ post.author }}"</p>
-                <p>Дата: {{ post.date }}</p>
-                <hr>
-                <p>DEBUG: title="{{ post.title }}", author="{{ post.author }}"</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>Пока нет постов</p>
-    {% endif %}
+    {% for post in posts_list %}
+        {{ post.title }}
+        {{ post.text }}
+        {{ post.author }}
+    {% endfor %}
 </body>
 </html>
