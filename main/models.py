@@ -12,4 +12,4 @@ class Post(models.Model):
         verbose_name_plural = "zapisi"
 
     def __str__(self):
-        return f'{self.title},{ self.author}'
+        return self.title  # Только заголовок
