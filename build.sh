@@ -17,3 +17,13 @@ if not User.objects.filter(username='admin').exists():
 else:
     print('Superuser already exists')
 "
+
+# Отладка - покажет созданных пользователей
+python manage.py shell -c "
+from django.contrib.auth import get_user_model
+User = get_user_model()
+users = User.objects.all()
+print(f'Total users: {users.count()}')
+for user in users:
+    print(f'Username: {user.username}, Email: {user.email}, is_superuser: {user.is_superuser}')
+"
