@@ -8,7 +8,9 @@
     {% for post in posts_list %}
         <h3>{{ post.title }}</h3>
         <p>{{ post.text }}</p>
-        {{ post.author }}
+        <p>Автор: {{ post.author }}</p>
+        <p>Раздел: {{ post.razdel }}</p>
+        <hr>
     {% endfor %}
 </body>
 </html>
