@@ -64,6 +64,15 @@ else:
         }
     }
 
+# НАСТРОЙКИ БЕЗОПАСНОСТИ ДЛЯ RENDER
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+]
+
+# Если знаете точный домен вашего сайта, добавьте его:
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
