@@ -49,7 +49,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# ИСПРАВЛЕННАЯ НАСТРОЙКА БАЗЫ ДАННЫХ
+# НАСТРОЙКА БАЗЫ ДАННЫХ
 if 'DATABASE_URL' in os.environ:
     # Для продакшена (Render)
     DATABASES = {
@@ -63,15 +63,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
-# НАСТРОЙКИ БЕЗОПАСНОСТИ ДЛЯ RENDER
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.onrender.com',
-]
-
-# Если знаете точный домен вашего сайта, добавьте его:
-if RENDER_EXTERNAL_HOSTNAME:
-    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -90,11 +81,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# НАСТРОЙКИ БЕЗОПАСНОСТИ ДЛЯ RENDER
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+]
+
+# Render hostname configuration
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 
-# Для статических файлов (если нет)
+# Для статических файлов
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
