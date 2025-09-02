@@ -4,8 +4,10 @@ from django.db import models
 class Post(models.Model):
     title = models.CharField("zagpolovok",max_length=100)
     text = models.TextField()
+    razdel = models.TextField(default="obczee")
     author = models.CharField("avtor",max_length=100)
     date = models.DateField()
+
 
     class Meta:
         verbose_name = "zapis"
