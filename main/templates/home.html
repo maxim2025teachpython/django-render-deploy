@@ -386,6 +386,41 @@
             element.style.color = count > 0 ? '#e74c3c' : '#666';
         }
 
+        function toggleReadMore(postId) {
+            const content = document.getElementById(`content-${postId}`);
+            const btn = content.nextElementSibling;
+            const preview = btn.nextElementSibling;
+
+            if (content.classList.contains('collapsed')) {
+                // Развернуть
+                content.classList.remove('collapsed');
+                btn.innerHTML = 'Скрыть';
+                btn.classList.add('expanded');
+                if (preview && preview.classList.contains('post-preview')) {
+                    preview.style.display = 'none';
+                }
+
+                // Плавная анимация
+                content.style.maxHeight = 'none';
+                content.style.transition = 'all 0.5s ease';
+            } else {
+                // Свернуть
+                content.classList.add('collapsed');
+                btn.innerHTML = 'Читать далее';
+                btn.classList.remove('expanded');
+                if (preview && preview.classList.contains('post-preview')) {
+                    preview.style.display = 'block';
+                }
+
+                // Плавная анимация
+                content.style.maxHeight = '120px';
+                content.style.transition = 'all 0.5s ease';
+
+                // Прокрутка к началу поста
+                content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
         function toggleAddForm() {
             const form = document.getElementById('addPostForm');
             const btn = document.querySelector('.toggle-form-btn');
