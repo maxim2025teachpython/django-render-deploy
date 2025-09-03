@@ -1,22 +1,268 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>ukrainka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Красивые посты</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .posts-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+
+        .post-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .author {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .author::before {
+            content: '👤';
+            font-size: 1em;
+        }
+
+        .section {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .post-content {
+            line-height: 1.6;
+            color: #333;
+            font-size: 1em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .post-content:empty::after {
+            content: 'Пустой пост';
+            color: #999;
+            font-style: italic;
+        }
+
+        .post-footer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .likes {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .likes:hover {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .post-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 60px 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-<form method="get" action="">
-    <input type="text" name="query" placeholder="Поиск..." value="{{ query }}">
-    <button type="submit">Найти</button>
-</form>
-<hr>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Посты сообщества</h1>
+            <p>Красивое отображение ваших постов</p>
+        </div>
 
-    {% for post in posts_list %}
-        <h3>{{ post.title }}</h3>
-        <p>{{ post.text }}</p>
-        <p>Автор: {{ post.author }}</p>
-        <p>Раздел: {{ post.razdel }}</p>
-        <hr>
-    {% endfor %}
+        <div class="posts-grid" id="postsContainer">
+            <!-- Посты будут добавлены сюда через JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Ваши данные постов
+        const posts = [
+            { author: "asdsa", section: "obczee", content: "sad\nasdsad" },
+            { author: "neznusik", section: "privet privet", content: "ukrainka na vode\nludi videli, jak Mariana shla po vode" },
+            { author: "sg", section: "gs", content: "sadf\ntgt" },
+            { author: "sfg", section: "ghsg", content: "adf\ndsafg" },
+            { author: "sfdg", section: "ghshs", content: "ghfshgh\ngfshgsfh" },
+            { author: "ety", section: "eh", content: "sfdg\njjietyj" },
+            { author: "ery", section: "euuee", content: "yertyturt\nuyu maxim" },
+            { author: "fg", section: "papa", content: "afsa\ngfda" },
+            { author: "girl", section: "papa", content: ",mama\nfsda" }
+        ];
+
+        function createPostCard(post, index) {
+            const postCard = document.createElement('div');
+            postCard.className = 'post-card';
+            postCard.style.animationDelay = `${index * 0.1}s`;
+
+            postCard.innerHTML = `
+                <div class="post-header">
+                    <div class="author">${post.author}</div>
+                    <div class="section">${post.section}</div>
+                </div>
+                <div class="post-content">${post.content || ''}</div>
+                <div class="post-footer">
+                    <div class="likes" onclick="toggleLike(this)">
+                        ❤️ <span>0</span>
+                    </div>
+                    <div class="time">Только что</div>
+                </div>
+            `;
+
+            return postCard;
+        }
+
+        function toggleLike(element) {
+            const span = element.querySelector('span');
+            let count = parseInt(span.textContent);
+            count = count === 0 ? 1 : 0;
+            span.textContent = count;
+            element.style.color = count > 0 ? '#e74c3c' : '#666';
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('postsContainer');
+
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h2>Пока нет постов</h2>
+                        <p>Добавьте первый пост, чтобы увидеть его здесь</p>
+                    </div>
+                `;
+                return;
+            }
+
+            posts.forEach((post, index) => {
+                const postCard = createPostCard(post, index);
+                container.appendChild(postCard);
+            });
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', renderPosts);
+
+        // Добавить анимацию появления
+        const style = document.createElement('style');
+        style.textContent = `
+            .post-card {
+                animation: slideUp 0.6s ease-out forwards;
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            @keyframes slideUp {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
