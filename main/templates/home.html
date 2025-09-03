@@ -35,6 +35,130 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
+        .search-container {
+            max-width: 600px;
+            margin: 30px auto 40px;
+            position: relative;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 0;
+        }
+
+        .search-box {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            font-size: 1.1em;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-box:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .search-box::placeholder {
+            color: #999;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .add-post-container {
+            max-width: 600px;
+            margin: 20px auto 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .add-post-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            outline: none;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
         .posts-grid {
             display: grid;
             gap: 20px;
@@ -51,6 +175,7 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             position: relative;
             overflow: hidden;
+            animation: slideUp 0.6s ease-out forwards;
         }
 
         .post-card::before {
@@ -68,54 +193,20 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .author {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
+        .post-title {
+            font-size: 1.3em;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .author::before {
-            content: '👤';
-            font-size: 1em;
-        }
-
-        .section {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
-            font-weight: 500;
-            border: 1px solid rgba(102, 126, 234, 0.2);
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.4;
         }
 
         .post-content {
             line-height: 1.6;
-            color: #333;
+            color: #555;
             font-size: 1em;
             white-space: pre-wrap;
             word-wrap: break-word;
-        }
-
-        .post-content:empty::after {
-            content: 'Пустой пост';
-            color: #999;
-            font-style: italic;
         }
 
         .post-footer {
@@ -141,21 +232,6 @@
             color: #e74c3c;
         }
 
-        @media (max-width: 768px) {
-            .posts-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .post-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
         .empty-state {
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
@@ -166,6 +242,66 @@
             font-size: 1.5em;
             margin-bottom: 10px;
         }
+
+        .toggle-form-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toggle-form-btn:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+        }
+
+        .form-hidden {
+            display: none;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-box {
+                border-radius: 25px;
+                margin-bottom: 10px;
+            }
+
+            .search-btn {
+                border-radius: 25px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -175,47 +311,73 @@
             <p>Красивое отображение ваших постов</p>
         </div>
 
-        <div class="posts-grid" id="postsContainer">
-            <!-- Посты будут добавлены сюда через JavaScript -->
+        <!-- Форма поиска -->
+        <div class="search-container">
+            <form method="get" class="search-form">
+                <input type="text"
+                       class="search-box"
+                       name="query"
+                       value="{{ query }}"
+                       placeholder="Поиск по заголовку или содержанию...">
+                <button type="submit" class="search-btn">🔍 Найти</button>
+            </form>
         </div>
-    </div>
 
-    <script>
-        // Ваши данные постов
-        const posts = [
-            { author: "asdsa", section: "obczee", content: "sad\nasdsad" },
-            { author: "neznusik", section: "privet privet", content: "ukrainka na vode\nludi videli, jak Mariana shla po vode" },
-            { author: "sg", section: "gs", content: "sadf\ntgt" },
-            { author: "sfg", section: "ghsg", content: "adf\ndsafg" },
-            { author: "sfdg", section: "ghshs", content: "ghfshgh\ngfshgsfh" },
-            { author: "ety", section: "eh", content: "sfdg\njjietyj" },
-            { author: "ery", section: "euuee", content: "yertyturt\nuyu maxim" },
-            { author: "fg", section: "papa", content: "afsa\ngfda" },
-            { author: "girl", section: "papa", content: ",mama\nfsda" }
-        ];
-
-        function createPostCard(post, index) {
-            const postCard = document.createElement('div');
-            postCard.className = 'post-card';
-            postCard.style.animationDelay = `${index * 0.1}s`;
-
-            postCard.innerHTML = `
-                <div class="post-header">
-                    <div class="author">${post.author}</div>
-                    <div class="section">${post.section}</div>
+        <!-- Форма добавления поста -->
+        <div class="add-post-container form-hidden" id="addPostForm">
+            <div class="add-post-title">✍️ Добавить новый пост</div>
+            <form method="post" action="{% url 'add_post' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label" for="title">Заголовок:</label>
+                    <input type="text" class="form-input" name="title" id="title" placeholder="Введите заголовок поста" required>
                 </div>
-                <div class="post-content">${post.content || ''}</div>
+                <div class="form-group">
+                    <label class="form-label" for="text">Содержание:</label>
+                    <textarea class="form-input form-textarea" name="text" id="text" placeholder="Напишите ваш пост..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">📝 Опубликовать пост</button>
+            </form>
+        </div>
+
+        <!-- Посты -->
+        <div class="posts-grid" id="postsContainer">
+            {% for post in posts_list %}
+            <div class="post-card">
+                <div class="post-title">{{ post.title }}</div>
+                <div class="post-content">{{ post.text|linebreaks }}</div>
                 <div class="post-footer">
                     <div class="likes" onclick="toggleLike(this)">
                         ❤️ <span>0</span>
                     </div>
-                    <div class="time">Только что</div>
+                    <div class="time">
+                        {% if post.created_at %}
+                            {{ post.created_at|timesince }} назад
+                        {% else %}
+                            Недавно
+                        {% endif %}
+                    </div>
                 </div>
-            `;
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                {% if query %}
+                    <h2>🔍 Ничего не найдено</h2>
+                    <p>По запросу "{{ query }}" постов не найдено</p>
+                    <p><a href="{% url 'posts' %}" style="color: rgba(255,255,255,0.8); text-decoration: underline;">Показать все посты</a></p>
+                {% else %}
+                    <h2>Пока нет постов</h2>
+                    <p>Добавьте первый пост, чтобы увидеть его здесь</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
 
-            return postCard;
-        }
+        <!-- Кнопка для показа/скрытия формы -->
+        <button class="toggle-form-btn" onclick="toggleAddForm()" title="Добавить пост">✏️</button>
+    </div>
 
+    <script>
         function toggleLike(element) {
             const span = element.querySelector('span');
             let count = parseInt(span.textContent);
@@ -224,45 +386,29 @@
             element.style.color = count > 0 ? '#e74c3c' : '#666';
         }
 
-        function renderPosts() {
-            const container = document.getElementById('postsContainer');
+        function toggleAddForm() {
+            const form = document.getElementById('addPostForm');
+            const btn = document.querySelector('.toggle-form-btn');
 
-            if (posts.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <h2>Пока нет постов</h2>
-                        <p>Добавьте первый пост, чтобы увидеть его здесь</p>
-                    </div>
-                `;
-                return;
+            if (form.classList.contains('form-hidden')) {
+                form.classList.remove('form-hidden');
+                btn.innerHTML = '✖️';
+                btn.title = 'Закрыть форму';
+                form.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                form.classList.add('form-hidden');
+                btn.innerHTML = '✏️';
+                btn.title = 'Добавить пост';
             }
-
-            posts.forEach((post, index) => {
-                const postCard = createPostCard(post, index);
-                container.appendChild(postCard);
-            });
         }
 
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', renderPosts);
-
-        // Добавить анимацию появления
-        const style = document.createElement('style');
-        style.textContent = `
-            .post-card {
-                animation: slideUp 0.6s ease-out forwards;
-                opacity: 0;
-                transform: translateY(30px);
+        // Автофокус на поле поиска при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBox = document.querySelector('.search-box');
+            if (searchBox && !searchBox.value) {
+                searchBox.focus();
             }
-
-            @keyframes slideUp {
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        `;
-        document.head.appendChild(style);
+        });
     </script>
 </body>
 </html>
