@@ -24,7 +24,8 @@ class Post(models.Model):
         blank=True,
         null=True
     )
-    created_at = models.DateTimeField("создано", auto_now_add=True)
+    created_at = models.DateTimeField("создано", default=timezone.now)
+
     updated_at = models.DateTimeField("обновлено", auto_now=True)
 
     class Meta:
