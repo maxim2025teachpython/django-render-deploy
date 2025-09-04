@@ -368,6 +368,16 @@ background-repeat: no-repeat;
             </form>
         </div>
 
+        <div class="add-post-container" style="margin-bottom: 40px;">
+  <div class="add-post-title">🤖 Чат с ИИ помощником</div>
+  <div class="form-group">
+    <label class="form-label" for="ai-message">Ваш вопрос:</label>
+    <input type="text" class="form-input" id="ai-message" placeholder="Например: придумай заголовок для поста">
+  </div>
+  <button class="submit-btn" onclick="sendToAI()">Отправить</button>
+  <div id="ai-response" style="margin-top: 20px; color: #333; font-weight: 500;"></div>
+</div>
+
         <!-- Посты -->{% for post in posts_list %}
   <div class="post-card">
     <div class="post-title">{{ post.title }}</div>
@@ -477,6 +487,34 @@ background-repeat: no-repeat;
                 searchBox.focus();
             }
         });
+
+        function sendToAI() {
+  const message = document.getElementById('ai-message').value;
+  if (!message.trim()) {
+    document.getElementById('ai-response').innerText = "Введите сообщение для ИИ.";
+    return;
+  }
+
+  fetch('/ai_chat/', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({message: message})
+  })
+  .then(response => response.json())
+  .then(data => {
+    const responseBox = document.getElementById('ai-response');
+    if (data.success) {
+      responseBox.innerText = data.response;
+    } else {
+      responseBox.innerText = "Ошибка: " + data.error;
+    }
+  })
+  .catch(error => {
+    document.getElementById('ai-response').innerText = "Ошибка соединения с сервером.";
+    console.error("AI Chat Error:", error);
+  });
+}
+
     </script>
 </body>
 </html>
