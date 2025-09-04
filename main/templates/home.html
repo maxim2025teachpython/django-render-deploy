@@ -302,6 +302,28 @@
                 border-radius: 25px;
             }
         }
+        .collapsed {
+    max-height: 120px;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+.read-more-btn {
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.read-more-btn:hover {
+    background: linear-gradient(135deg, #556de8, #6c3fa0);
+}
+
     </style>
 </head>
 <body>
@@ -340,37 +362,42 @@
             </form>
         </div>
 
-        <!-- Посты -->
-        <div class="posts-grid" id="postsContainer">
-            {% for post in posts_list %}
-            <div class="post-card">
-                <div class="post-title">{{ post.title }}</div>
-                <div class="post-content">{{ post.text|linebreaks }}</div>
-                <div class="post-footer">
-                    <div class="likes" onclick="toggleLike(this)">
-                        ❤️ <span>0</span>
-                    </div>
-                    <div class="time">
-                        {% if post.created_at %}
-                            {{ post.created_at|timesince }} назад
-                        {% else %}
-                            Недавно
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="empty-state">
-                {% if query %}
-                    <h2>🔍 Ничего не найдено</h2>
-                    <p>По запросу "{{ query }}" постов не найдено</p>
-                    <p><a href="{% url 'posts' %}" style="color: rgba(255,255,255,0.8); text-decoration: underline;">Показать все посты</a></p>
-                {% else %}
-                    <h2>Пока нет постов</h2>
-                    <p>Добавьте первый пост, чтобы увидеть его здесь</p>
-                {% endif %}
-            </div>
-            {% endfor %}
+        <!-- Посты -->{% for post in posts_list %}
+  <div class="post-card">
+    <div class="post-title">{{ post.title }}</div>
+
+    <div class="post-content collapsed" id="content-{{ post.id }}">
+      {{ post.text|linebreaks }}
+    </div>
+
+    <button onclick="toggleReadMore({{ post.id }})" class="read-more-btn">Читать далее</button>
+
+    <div class="post-footer">
+      <div class="likes" onclick="toggleLike(this)">
+        ❤️ <span>0</span>
+      </div>
+      <div class="time">
+        {% if post.created_at %}
+          {{ post.created_at|timesince }} назад
+        {% else %}
+          Недавно
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% empty %}
+  <div class="empty-state">
+    {% if query %}
+      <h2>🔍 Ничего не найдено</h2>
+      <p>По запросу "{{ query }}" постов не найдено</p>
+      <p><a href="{% url 'posts' %}" style="color: rgba(255,255,255,0.8); text-decoration: underline;">Показать все посты</a></p>
+    {% else %}
+      <h2>Пока нет постов</h2>
+      <p>Добавьте первый пост, чтобы увидеть его здесь</p>
+    {% endif %}
+  </div>
+{% endfor %}
+
         </div>
 
         <!-- Кнопка для показа/скрытия формы -->
