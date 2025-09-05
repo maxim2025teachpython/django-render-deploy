@@ -1,520 +1,165 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Красивые посты</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Стеклянные посты</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image:
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=2044&q=80');
-background-size: cover;
-background-position: center center;
-background-attachment: fixed;
-background-repeat: no-repeat;
-            min-height: 100vh;
-            padding: 20px;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=2044&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+      padding: 30px;
+      color: #fff;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+    .header h1 {
+      font-size: 2.5em;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    }
 
-        .search-container {
-            max-width: 600px;
-            margin: 30px auto 40px;
-            position: relative;
-        }
+    .glass-block {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
 
-        .search-form {
-            display: flex;
-            gap: 0;
-        }
+    .glass-block:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+    }
 
-        .search-box {
-            flex: 1;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 25px 0 0 25px;
-            font-size: 1.1em;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            outline: none;
-        }
+    .search-box,
+    .form-input,
+    .submit-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      color: #fff;
+      padding: 14px 18px;
+      font-size: 1em;
+      width: 100%;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
 
-        .search-box:focus {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 1);
-        }
+    .search-box::placeholder,
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
 
-        .search-box::placeholder {
-            color: #999;
-        }
+    .submit-btn {
+      cursor: pointer;
+      font-weight: 600;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      color: white;
+    }
 
-        .search-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border: none;
-            padding: 15px 25px;
-            border-radius: 0 25px 25px 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
-            font-size: 1.1em;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(102, 126, 234, 0.4);
+    }
 
-        .search-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
-        }
+    .post-card {
+      padding: 25px;
+      margin-bottom: 20px;
+    }
 
-        .add-post-container {
-            max-width: 600px;
-            margin: 20px auto 40px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
+    .post-title {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-        .add-post-title {
-            text-align: center;
-            color: #333;
-            margin-bottom: 25px;
-            font-size: 1.4em;
-            font-weight: 600;
-        }
+    .post-content {
+      font-size: 1em;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+    }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    .post-footer {
+      margin-top: 15px;
+      font-size: 0.85em;
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255,255,255,0.6);
+    }
 
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-            font-size: 0.95em;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 12px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            outline: none;
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        .form-input:focus {
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-            font-family: inherit;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .posts-grid {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        }
-
-        .post-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-            animation: slideUp 0.6s ease-out forwards;
-        }
-
-        .post-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-        }
-
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .post-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        .post-content {
-            line-height: 1.6;
-            color: #555;
-            font-size: 1em;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .post-footer {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85em;
-            color: #666;
-        }
-
-        .likes {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .likes:hover {
-            color: #e74c3c;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            padding: 60px 20px;
-        }
-
-        .empty-state h2 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        .toggle-form-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.5em;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .toggle-form-btn:hover {
-            transform: scale(1.1) rotate(180deg);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
-        }
-
-        .form-hidden {
-            display: none;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .posts-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .search-form {
-                flex-direction: column;
-            }
-
-            .search-box {
-                border-radius: 25px;
-                margin-bottom: 10px;
-            }
-
-            .search-btn {
-                border-radius: 25px;
-            }
-        }
-        .collapsed {
-    max-height: 120px;
-    overflow: hidden;
-    transition: max-height 0.5s ease;
-}
-
-.read-more-btn {
-    margin-top: 10px;
-    padding: 8px 14px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.read-more-btn:hover {
-    background: linear-gradient(135deg, #556de8, #6c3fa0);
-}
-
-    </style>
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2em;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>✨ Посты сообщества</h1>
-            <p>Красивое отображение ваших постов</p>
-        </div>
-
-        <!-- Форма поиска -->
-        <div class="search-container">
-            <form method="get" class="search-form">
-                <input type="text"
-                       class="search-box"
-                       name="query"
-                       value="{{ query }}"
-                       placeholder="Поиск по заголовку или содержанию...">
-                <button type="submit" class="search-btn">🔍 Найти</button>
-            </form>
-        </div>
-
-        <!-- Форма добавления поста -->
-        <div class="add-post-container form-hidden" id="addPostForm">
-            <div class="add-post-title">✍️ Добавить новый пост</div>
-            <form method="post" action="{% url 'add_post' %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="form-label" for="title">Заголовок:</label>
-                    <input type="text" class="form-input" name="title" id="title" placeholder="Введите заголовок поста" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="text">Содержание:</label>
-                    <textarea class="form-input form-textarea" name="text" id="text" placeholder="Напишите ваш пост..." required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">📝 Опубликовать пост</button>
-            </form>
-        </div>
-
-        <div class="add-post-container" style="margin-bottom: 40px;">
-  <div class="add-post-title">🤖 Чат с ИИ помощником</div>
-  <div class="form-group">
-    <label class="form-label" for="ai-message">Ваш вопрос:</label>
-    <input type="text" class="form-input" id="ai-message" placeholder="Например: придумай заголовок для поста">
-  </div>
-  <button class="submit-btn" onclick="sendToAI()">Отправить</button>
-  <div id="ai-response" style="margin-top: 20px; color: #333; font-weight: 500;"></div>
-</div>
-
-        <!-- Посты -->{% for post in posts_list %}
-  <div class="post-card">
-    <div class="post-title">{{ post.title }}</div>
-
-    <div class="post-content collapsed" id="content-{{ post.id }}">
-      {{ post.text|linebreaks }}
+  <div class="container">
+    <div class="header">
+      <h1>✨ Стеклянные посты</h1>
+      <p>Лёгкий и современный дизайн</p>
     </div>
 
-    <button onclick="toggleReadMore({{ post.id }})" class="read-more-btn">Читать далее</button>
+    <!-- Поиск -->
+    <input type="text" class="search-box" placeholder="🔍 Поиск по постам...">
 
-    <div class="post-footer">
-      <div class="likes" onclick="toggleLike(this)">
-        ❤️ <span>0</span>
+    <!-- Форма добавления -->
+    <div class="glass-block" style="padding: 25px; margin-bottom: 30px;">
+      <h2 style="margin-bottom: 15px;">✍️ Добавить пост</h2>
+      <input type="text" class="form-input" placeholder="Заголовок">
+      <textarea class="form-input" placeholder="Содержание" rows="5"></textarea>
+      <button class="submit-btn">📝 Опубликовать</button>
+    </div>
+
+    <!-- Посты -->
+    <div class="post-card glass-block">
+      <div class="post-title">Пример поста</div>
+      <div class="post-content">
+        Это пример содержимого поста. Здесь можно писать мысли, идеи, заметки — всё, что угодно.
       </div>
-      <div class="time">
-        {% if post.created_at %}
-          {{ post.created_at|timesince }} назад
-        {% else %}
-          Недавно
-        {% endif %}
+      <div class="post-footer">
+        <div>❤️ 0</div>
+        <div>5 минут назад</div>
+      </div>
+    </div>
+
+    <div class="post-card glass-block">
+      <div class="post-title">Ещё один пост</div>
+      <div class="post-content">
+        Второй пример. Ты можешь стилизовать это как угодно — добавить кнопки, лайки, комментарии.
+      </div>
+      <div class="post-footer">
+        <div>❤️ 3</div>
+        <div>10 минут назад</div>
       </div>
     </div>
   </div>
-{% empty %}
-  <div class="empty-state">
-    {% if query %}
-      <h2>🔍 Ничего не найдено</h2>
-      <p>По запросу "{{ query }}" постов не найдено</p>
-      <p><a href="{% url 'posts' %}" style="color: rgba(255,255,255,0.8); text-decoration: underline;">Показать все посты</a></p>
-    {% else %}
-      <h2>Пока нет постов</h2>
-      <p>Добавьте первый пост, чтобы увидеть его здесь</p>
-    {% endif %}
-  </div>
-{% endfor %}
-
-        </div>
-
-        <!-- Кнопка для показа/скрытия формы -->
-        <button class="toggle-form-btn" onclick="toggleAddForm()" title="Добавить пост">✏️</button>
-    </div>
-
-    <script>
-        function toggleLike(element) {
-            const span = element.querySelector('span');
-            let count = parseInt(span.textContent);
-            count = count === 0 ? 1 : 0;
-            span.textContent = count;
-            element.style.color = count > 0 ? '#e74c3c' : '#666';
-        }
-
-        function toggleReadMore(postId) {
-            const content = document.getElementById(`content-${postId}`);
-            const btn = content.nextElementSibling;
-            const preview = btn.nextElementSibling;
-
-            if (content.classList.contains('collapsed')) {
-                // Развернуть
-                content.classList.remove('collapsed');
-                btn.innerHTML = 'Скрыть';
-                btn.classList.add('expanded');
-                if (preview && preview.classList.contains('post-preview')) {
-                    preview.style.display = 'none';
-                }
-
-                // Плавная анимация
-                content.style.maxHeight = 'none';
-                content.style.transition = 'all 0.5s ease';
-            } else {
-                // Свернуть
-                content.classList.add('collapsed');
-                btn.innerHTML = 'Читать далее';
-                btn.classList.remove('expanded');
-                if (preview && preview.classList.contains('post-preview')) {
-                    preview.style.display = 'block';
-                }
-
-                // Плавная анимация
-                content.style.maxHeight = '120px';
-                content.style.transition = 'all 0.5s ease';
-
-                // Прокрутка к началу поста
-                content.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
-        function toggleAddForm() {
-            const form = document.getElementById('addPostForm');
-            const btn = document.querySelector('.toggle-form-btn');
-
-            if (form.classList.contains('form-hidden')) {
-                form.classList.remove('form-hidden');
-                btn.innerHTML = '✖️';
-                btn.title = 'Закрыть форму';
-                form.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                form.classList.add('form-hidden');
-                btn.innerHTML = '✏️';
-                btn.title = 'Добавить пост';
-            }
-        }
-
-        // Автофокус на поле поиска при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchBox = document.querySelector('.search-box');
-            if (searchBox && !searchBox.value) {
-                searchBox.focus();
-            }
-        });
-
-        function sendToAI() {
-  const message = document.getElementById('ai-message').value;
-  if (!message.trim()) {
-    document.getElementById('ai-response').innerText = "Введите сообщение для ИИ.";
-    return;
-  }
-
-  fetch('/ai_chat/', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({message: message})
-  })
-  .then(response => response.json())
-  .then(data => {
-    const responseBox = document.getElementById('ai-response');
-    if (data.success) {
-      responseBox.innerText = data.response;
-    } else {
-      responseBox.innerText = "Ошибка: " + data.error;
-    }
-  })
-  .catch(error => {
-    document.getElementById('ai-response').innerText = "Ошибка соединения с сервером.";
-    console.error("AI Chat Error:", error);
-  });
-}
-
-    </script>
 </body>
 </html>
