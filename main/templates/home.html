@@ -77,29 +77,35 @@
   </style>
 </head>
 <body>
-
   <div class="container">
 
-    <!-- 📝 Пример постов -->
-    <div class="glass-block">
-      <div class="post-title">Заголовок поста</div>
-      <div class="post-content">Это пример содержимого поста. Здесь будет текст, который пользователь опубликовал.</div>
-      <div class="post-date">05 сентября 2025, 02:26</div>
-    </div>
+    <!-- 📝 Вывод постов -->
+    {% for post in posts_list %}
+      <div class="glass-block">
+        <div class="post-title">{{ post.title }}</div>
+        <div class="post-content">{{ post.text }}</div>
+        <div class="post-date">{{ post.created_at|date:"d F Y, H:i" }}</div>
+      </div>
+    {% empty %}
+      <div class="glass-block">Нет постов для отображения.</div>
+    {% endfor %}
 
     <!-- ➕ Форма добавления поста -->
-    <div class="glass-block">
-      <div class="add-post-title">Добавить пост</div>
-      <div class="form-group">
-        <label for="title">Заголовок:</label>
-        <input type="text" id="title" placeholder="Введите заголовок">
+    <form method="POST" action="{% url 'posts' %}">
+      {% csrf_token %}
+      <div class="glass-block">
+        <div class="add-post-title">Добавить пост</div>
+        <div class="form-group">
+          <label for="title">Заголовок:</label>
+          <input type="text" name="title" id="title" placeholder="Введите заголовок">
+        </div>
+        <div class="form-group">
+          <label for="text">Текст:</label>
+          <textarea name="text" id="text" rows="4" placeholder="Введите текст поста"></textarea>
+        </div>
+        <button class="submit-btn" type="submit">Опубликовать</button>
       </div>
-      <div class="form-group">
-        <label for="content">Текст:</label>
-        <textarea id="content" rows="4" placeholder="Введите текст поста"></textarea>
-      </div>
-      <button class="submit-btn">Опубликовать</button>
-    </div>
+    </form>
 
     <!-- 🤖 Чат с ИИ -->
     <div class="glass-block">
@@ -114,11 +120,9 @@
 
   </div>
 
-  <!-- 💬 JS для ИИ -->
   <script>
     function sendToAI() {
       const message = document.getElementById('ai-message').value;
-      // Здесь должен быть реальный маршрут на сервере
       fetch('/ai_chat/', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -135,6 +139,5 @@
       });
     }
   </script>
-
 </body>
 </html>
