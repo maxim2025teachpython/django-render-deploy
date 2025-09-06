@@ -1,0 +1,5 @@
+<!-- templates/post_detail.html -->
+<h1>{{ post.title }}</h1>
+<p>{{ post.text }}</p>
+<p><em>Создан: {{ post.created_at }}</em></p>
+<a href="{% url 'posts' %}">← Назад</a>

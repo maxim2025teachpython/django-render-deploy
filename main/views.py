@@ -10,8 +10,17 @@ import logging
 
 from .models import Post
 from .ai_assistant import get_ai_assistant
+from django.views.generic import DetailView
 
 logger = logging.getLogger(__name__)
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'post_detail.html'
+    context_object_name = 'post'
+
+
 
 
 class PostView(View):
