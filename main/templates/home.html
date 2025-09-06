@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +6,8 @@
   <title>Мой блог</title>
   <style>
     body {
-      background: #1a1a1a;
+      background: url("{% static 'images/city.jpg' %}") no-repeat center center fixed;
+      background-size: cover;
       font-family: 'Segoe UI', sans-serif;
       color: #fff;
       margin: 0;
@@ -36,6 +38,20 @@
       font-size: 12px;
       color: #aaa;
       margin-top: 10px;
+    }
+    .read-more-btn {
+      display: inline-block;
+      margin-top: 15px;
+      background: #00aaff;
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .read-more-btn:hover {
+      background: #0088cc;
     }
     .add-post-title {
       font-size: 18px;
@@ -83,8 +99,9 @@
     {% for post in posts_list %}
       <div class="glass-block">
         <div class="post-title">{{ post.title }}</div>
-        <div class="post-content">{{ post.text }}</div>
+        <div class="post-content">{{ post.text|truncatewords:30 }}</div>
         <div class="post-date">{{ post.created_at|date:"d F Y, H:i" }}</div>
+        <a href="{% url 'post_detail' post.id %}" class="read-more-btn">Читать далее</a>
       </div>
     {% empty %}
       <div class="glass-block">Нет постов для отображения.</div>
@@ -115,29 +132,3 @@
         <input type="text" id="ai-message" placeholder="Например: придумай заголовок для поста">
       </div>
       <button class="submit-btn" onclick="sendToAI()">Отправить</button>
-      <div id="ai-response" class="ai-response"></div>
-    </div>
-
-  </div>
-
-  <script>
-    function sendToAI() {
-      const message = document.getElementById('ai-message').value;
-      fetch('/ai_chat/', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({message: message})
-      })
-      .then(response => response.json())
-      .then(data => {
-        const responseBox = document.getElementById('ai-response');
-        responseBox.innerText = data.success ? data.response : "Ошибка: " + data.error;
-      })
-      .catch(error => {
-        document.getElementById('ai-response').innerText = "Ошибка соединения с сервером.";
-        console.error("AI Chat Error:", error);
-      });
-    }
-  </script>
-</body>
-</html>
