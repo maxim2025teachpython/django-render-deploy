@@ -21,27 +21,34 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
 
 
-
-
 class PostView(View):
     """Главная страница блога: отображение и добавление постов"""
 
     def get(self, request):
-        query = request.GET.get('query', '')
+        # Изменил query на search для соответствия шаблону
+        search_query = request.GET.get('search', '')
         ai_search = request.GET.get('ai_search', False)
 
-        if query:
+        if search_query:
             posts = Post.objects.filter(
-                Q(title__icontains=query) | Q(text__icontains=query)
+                Q(title__icontains=search_query) | Q(text__icontains=search_query)
             ).order_by('-created_at')
         else:
             posts = Post.objects.all().order_by('-created_at')
 
+        # Проверяем доступность ИИ
+        try:
+            ai_assistant = get_ai_assistant()
+            ai_available = ai_assistant.is_available()
+        except Exception as e:
+            logger.error(f"Ошибка при проверке доступности ИИ: {e}")
+            ai_available = False
+
         return render(request, 'home.html', {
             'posts_list': posts,
-            'query': query,
+            'search_query': search_query,  # Переименовал для ясности
             'ai_search': ai_search,
-            'ai_available': get_ai_assistant().is_available()
+            'ai_available': ai_available
         })
 
     def post(self, request):
@@ -55,6 +62,7 @@ class PostView(View):
                     text=text,
                     created_at=timezone.now()
                 )
+                logger.info(f"Создан новый пост: {title}")
             except Exception as e:
                 logger.error(f"Ошибка при добавлении поста: {e}")
 
@@ -66,21 +74,64 @@ def ai_chat(request):
     """Обработка запроса к ИИ-чату"""
     if request.method == 'POST':
         try:
-            data = json.loads(request.body)
-            message = data.get('message', '')
+            # Добавляем проверку Content-Type
+            if request.content_type == 'application/json':
+                data = json.loads(request.body)
+            else:
+                # Fallback для form data
+                data = {'message': request.POST.get('message', '')}
+
+            message = data.get('message', '').strip()
 
             if not message:
-                return JsonResponse({'success': False, 'error': 'Сообщение не может быть пустым'})
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Сообщение не может быть пустым'
+                })
 
-            ai = get_ai_assistant()
-            if not ai.is_available():
-                return JsonResponse({'success': False, 'error': 'ИИ недоступен'})
+            # Проверяем доступность ИИ
+            try:
+                ai = get_ai_assistant()
+                if not ai.is_available():
+                    return JsonResponse({
+                        'success': False,
+                        'error': 'ИИ временно недоступен. Попробуйте позже.'
+                    })
+            except Exception as e:
+                logger.error(f"Ошибка инициализации ИИ: {e}")
+                return JsonResponse({
+                    'success': False,
+                    'error': 'ИИ недоступен из-за технической ошибки'
+                })
 
-            response = ai.chat(message)
-            return JsonResponse({'success': True, 'response': response})
+            # Получаем ответ от ИИ
+            try:
+                response = ai.chat(message)
+                logger.info(f"ИИ ответил на сообщение: {message[:50]}...")
+                return JsonResponse({
+                    'success': True,
+                    'response': response
+                })
+            except Exception as e:
+                logger.error(f"Ошибка при получении ответа от ИИ: {e}")
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Не удалось получить ответ от ИИ'
+                })
 
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'error': 'Неверный формат данных'
+            })
         except Exception as e:
-            logger.error(f"Ошибка ИИ-чата: {e}")
-            return JsonResponse({'success': False, 'error': 'Ошибка при обработке запроса'})
+            logger.error(f"Общая ошибка ИИ-чата: {e}")
+            return JsonResponse({
+                'success': False,
+                'error': 'Произошла непредвиденная ошибка'
+            })
     else:
-        return JsonResponse({'success': False, 'error': 'Метод не поддерживается'})
+        return JsonResponse({
+            'success': False,
+            'error': 'Поддерживается только POST запрос'
+        })

@@ -1,8 +1,9 @@
+# urls.py
 from django.urls import path
-from .views import PostView, PostDetailView, ai_chat
+from . import views
 
 urlpatterns = [
-    path('', PostView.as_view(), name='posts'),
-    path('ai_chat/', ai_chat, name='ai_chat'),
-    path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),  # 👈 вот он
+    path('', views.PostView.as_view(), name='posts'),
+    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('ai-chat/', views.ai_chat, name='ai_chat'),
 ]
