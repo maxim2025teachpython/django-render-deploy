@@ -25,8 +25,8 @@ class PostView(View):
     """Главная страница блога: отображение и добавление постов"""
 
     def get(self, request):
-        # Изменил query на search для соответствия шаблону
-        search_query = request.GET.get('search', '')
+        # Поддерживаем оба параметра для совместимости
+        search_query = request.GET.get('query', '') or request.GET.get('search', '')
         ai_search = request.GET.get('ai_search', False)
 
         if search_query:
