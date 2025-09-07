@@ -101,6 +101,7 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
+# В settings.py добавьте
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
