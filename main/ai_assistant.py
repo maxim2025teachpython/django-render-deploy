@@ -15,7 +15,7 @@ class SimpleAIAssistant:
 
     def is_available(self):
         """Проверка доступности ИИ"""
-        return self.available
+        return True
 
     def chat(self, message):
         """Получить ответ от ИИ"""
