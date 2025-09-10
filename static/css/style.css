@@ -1,9 +1,6 @@
 body {
-  background-image: url("/static/images/city.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 100vh;
-  padding: 20px;
+    background-image: url("../images/style/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
