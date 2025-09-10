@@ -50,8 +50,15 @@
       {% for post in posts_list %}
       <article class="post-card">
         <h3>{{ post.title }}</h3>
-        <p class="post-content collapsed" id="content-{{ forloop.counter }}">{{ post.text|linebreaks }}</p>
-        <button onclick="toggleReadMore({{ forloop.counter }})" class="read-more-btn">Читать далее</button>
+        <p class="post-content" id="content-{{ forloop.counter }}">
+  {% if post.text|length > 300 %}
+    {{ post.text|slice:":300" }}...
+    <button onclick="this.parentElement.innerHTML = '{{ post.text|escapejs|linebreaksbr }}';" class="read-more-btn">Читать далее</button>
+  {% else %}
+    {{ post.text|linebreaks }}
+  {% endif %}
+</p>
+
         <footer class="post-footer">
           <span class="likes" onclick="toggleLike(this)">❤️ <span>0</span></span>
           <span class="time">
