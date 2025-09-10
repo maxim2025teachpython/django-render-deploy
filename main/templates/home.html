@@ -235,9 +235,7 @@
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
             transform: translateY(-2px);
         }
-
-        .add-post-title {
-            text-align: center;
+text-align: center;
             color: #333;
             margin-bottom: 30px;
             font-size: 1.5em;
@@ -247,6 +245,8 @@
         .form-group {
             margin-bottom: 25px;
         }
+        .add-post-title {
+
 
         .form-label {
             display: block;
@@ -684,72 +684,47 @@
         <button class="toggle-form-btn" onclick="toggleAddForm()" title="Добавить пост">✏️</button>
     </div>
 
-    <script>
-        // Функция для "читать далее"
-        function toggleReadMore(postId) {
-            const content = document.getElementById(`content-${postId}`);
-            const btn = document.getElementById(`btn-${postId}`);
+<script>
+    const aiForm = document.getElementById('ai-form');
+    const aiInput = document.getElementById('ai-message');
+    const aiResponse = document.getElementById('ai-response');
+    const aiSubmit = document.getElementById('ai-submit');
 
-            if (content.classList.contains('collapsed')) {
-                content.classList.remove('collapsed');
-                btn.textContent = 'Скрыть';
-            } else {
-                content.classList.add('collapsed');
-                btn.textContent = 'Читать далее';
-                content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (aiForm) {
+        aiForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const message = aiInput.value.trim();
+            if (!message) return;
+
+            // Показываем состояние загрузки
+            aiResponse.className = 'ai-response loading show';
+            aiResponse.textContent = 'Обрабатываю запрос...';
+
+            try {
+                const res = await fetch('/ai-chat/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    aiResponse.className = 'ai-response show';
+                    aiResponse.textContent = data.response;
+                } else {
+                    aiResponse.className = 'ai-response error show';
+                    aiResponse.textContent = 'Ошибка: ' + data.error;
+                }
+            } catch (err) {
+                aiResponse.className = 'ai-response error show';
+                aiResponse.textContent = 'Ошибка соединения с сервером.';
             }
-        }
 
-        function toggleLike(element) {
-            const span = element.querySelector('span');
-            let count = parseInt(span.textContent);
-            count = count === 0 ? Math.floor(Math.random() * 10) + 1 : 0;
-            span.textContent = count;
-
-            if (count > 0) {
-                element.style.background = 'rgba(231, 76, 60, 0.2)';
-                element.style.color = '#e74c3c';
-            } else {
-                element.style.background = 'rgba(102, 126, 234, 0.1)';
-                element.style.color = '#666';
-            }
-        }
-
-        function toggleAddForm() {
-            const form = document.getElementById('addPostForm');
-            const btn = document.querySelector('.toggle-form-btn');
-
-            if (form.classList.contains('form-hidden')) {
-                form.classList.remove('form-hidden');
-                btn.innerHTML = '✖️';
-                btn.title = 'Закрыть форму';
-                form.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                // Фокус на первое поле
-                setTimeout(() => {
-                    document.getElementById('title').focus();
-                }, 300);
-            } else {
-                form.classList.add('form-hidden');
-                btn.innerHTML = '✏️';
-                btn.title = 'Добавить пост';
-            }
-        }
-
-        // ИИ чат функциональность
-        const aiForm = document.getElementById('ai-form');
-        const aiInput = document.getElementById('ai-message');
-        const aiResponse = document.getElementById('ai-response');
-        const aiSubmit = document.getElementById('ai-submit');
-
-        if (aiForm) {
-            aiForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                if (!aiInput.value.trim()) return;
-
-                // Показываем состояние загрузки
-                aiResponse.className = 'ai-response loading show
-        }
-        }
-        </script>
+            aiInput.value = '';
+        });
+    }
+</script>
