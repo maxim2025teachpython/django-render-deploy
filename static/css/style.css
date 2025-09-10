@@ -1,6 +1,313 @@
-body {
-    background-image: url("../images/style/background.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+/* Шрифт и сброс */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 100vh;
+  padding: 20px;
+  transition: background 0.4s ease;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Заголовок */
+.header {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.header h1 {
+  font-size: 2.8em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+  font-size: 1.2em;
+  opacity: 0.9;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: white;
+}
+
+/* Поиск */
+.search-form {
+  display: flex;
+  gap: 10px;
+  margin: 30px auto;
+  max-width: 600px;
+}
+
+.search-form input {
+  flex: 1;
+  padding: 15px 20px;
+  border-radius: 15px;
+  border: none;
+  font-size: 1em;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+}
+
+.search-form button {
+  padding: 15px 25px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ИИ помощник */
+.ai-section {
+  max-width: 700px;
+  margin: 40px auto;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.ai-section h2 {
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #333;
+}
+
+.ai-section form {
+  display: flex;
+  gap: 10px;
+}
+
+.ai-section input {
+  flex: 1;
+  padding: 15px;
+  border-radius: 15px;
+  border: 2px solid rgba(102,126,234,0.2);
+  font-size: 1em;
+}
+
+.ai-section button {
+  padding: 15px 25px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ai-response {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(240,248,255,0.9);
+  border-left: 5px solid #667eea;
+}
+
+.ai-response.loading {
+  background: rgba(255,248,220,0.9);
+  border-left-color: #ffd93d;
+}
+
+.ai-response.error {
+  background: rgba(255,240,240,0.9);
+  border-left-color: #ff6b6b;
+  color: #d63031;
+}
+
+/* Добавление поста */
+.add-post-section {
+  max-width: 700px;
+  margin: 40px auto;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.add-post-section h2 {
+  margin-bottom: 20px;
+  font-size: 1.4em;
+  color: #333;
+}
+
+.add-post-section input,
+.add-post-section textarea {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 15px;
+  border: 2px solid rgba(102,126,234,0.2);
+  font-size: 1em;
+}
+
+.add-post-section button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Посты */
+.posts-grid {
+  display: grid;
+  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  margin-bottom: 100px;
+}
+
+.post-card {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.2);
+}
+
+.post-card h3 {
+  font-size: 1.4em;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.post-content {
+  font-size: 1em;
+  color: #f0f0f0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 15px;
+}
+
+.post-content.collapsed {
+  max-height: 150px;
+  overflow: hidden;
+  position: relative;
+}
+
+.post-content.collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(transparent, rgba(255,255,255,0.95));
+}
+
+.read-more-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.likes {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.likes:hover {
+  color: #e74c3c;
+}
+
+.time {
+  background: rgba(255,255,255,0.15);
+  padding: 6px 12px;
+  border-radius: 15px;
+}
+
+/* Кнопка формы */
+.toggle-form-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5em;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+  z-index: 1000;
+}
+
+/* Тёмная тема */
+body.dark-mode {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  color: #eee;
+}
+
+body.dark-mode .post-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+body.dark-mode .post-card h3,
+body.dark-mode .post-content,
+body.dark-mode .time {
+  color: #eee;
+}
+
+body.dark-mode .ai-section,
+body.dark-mode .add-post-section {
+  background: rgba(255,255,255,0.08);
+  color: #eee;
+}
+
+body.dark-mode .search-form input {
+  background: rgba(255,255,255,0.1);
+  color: #eee;
+}
+
+body.dark-mode .search-form button {
+  background: linear

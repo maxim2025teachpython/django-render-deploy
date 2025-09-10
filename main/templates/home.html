@@ -1,749 +1,135 @@
-r: #999;
-        }
-
-        .search-btn {
-            background: linear-g{% load static %}
+{% load static %}
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Красивые посты</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background:
-                linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%),
-                url('{% static "background.jpg" %}') center/cover no-repeat fixed;
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.1);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-            padding: 20px 0;
-        }
-
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-
-        .search-container {
-            max-width: 600px;
-            margin: 30px auto 40px;
-            position: relative;
-        }
-
-        .search-form {
-            display: flex;
-            gap: 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            border-radius: 30px;
-            overflow: hidden;
-        }
-
-        .search-box {
-            flex: 1;
-            padding: 18px 25px;
-            border: none;
-            font-size: 1.1em;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .search-box:focus {
-            background: rgba(255, 255, 255, 1);
-            box-shadow: inset 0 0 0 2px #667eea;
-        }
-
-        .search-box::placeholder {
-            coloradient(135deg, #667eea, #764ba2);
-            border: none;
-            padding: 18px 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
-            font-size: 1.1em;
-            font-weight: 600;
-            min-width: 120px;
-        }
-
-        .search-btn:hover {
-            background: linear-gradient(135deg, #5a67d8, #6b46c1);
-            transform: scale(1.02);
-        }
-
-        /* ИИ помощник стили */
-        .ai-container {
-            max-width: 700px;
-            margin: 20px auto 40px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            padding: 35px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .ai-container:hover {
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
-            transform: translateY(-2px);
-        }
-
-        .ai-title {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 1.5em;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .ai-form {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .ai-input {
-            flex: 1;
-            padding: 15px 20px;
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            font-size: 1.05em;
-            transition: all 0.3s ease;
-            outline: none;
-            background: rgba(255, 255, 255, 0.9);
-            font-family: inherit;
-        }
-
-        .ai-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            background: rgba(255, 255, 255, 1);
-        }
-
-        .ai-submit-btn {
-            padding: 15px 25px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.05em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            min-width: 120px;
-        }
-
-        .ai-submit-btn:hover {
-            background: linear-gradient(135deg, #5a67d8, #6b46c1);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .ai-submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .ai-response {
-            background: rgba(240, 248, 255, 0.9);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-            border-left: 5px solid #667eea;
-            display: none;
-            line-height: 1.6;
-        }
-
-        .ai-response.show {
-            display: block;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        .ai-response.loading {
-            background: rgba(255, 248, 220, 0.9);
-            border-left-color: #ffd93d;
-        }
-
-        .ai-response.error {
-            background: rgba(255, 240, 240, 0.9);
-            border-left-color: #ff6b6b;
-            color: #d63031;
-        }
-
-        .add-post-container {
-            max-width: 700px;
-            margin: 20px auto 40px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            padding: 35px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .add-post-container:hover {
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
-            transform: translateY(-2px);
-        }
-text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-        .add-post-title {
-
-
-        .form-label {
-            display: block;
-            margin-bottom: 10px;
-            color: #555;
-            font-weight: 600;
-            font-size: 1em;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            font-size: 1.05em;
-            transition: all 0.3s ease;
-            outline: none;
-            background: rgba(255, 255, 255, 0.9);
-            font-family: inherit;
-        }
-
-        .form-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            background: rgba(255, 255, 255, 1);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.2em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            background: linear-gradient(135deg, #5a67d8, #6b46c1);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .stats-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px 25px;
-            text-align: center;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-
-        .posts-grid {
-            display: grid;
-            gap: 25px;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            margin-bottom: 100px;
-        }
-
-        .post-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            transition: all 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-            animation: slideUp 0.6s ease-out forwards;
-        }
-
-        .post-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-        }
-
-        .post-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
-        }
-
-        .post-title {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 18px;
-            line-height: 1.4;
-        }
-
-        .post-content {
-            line-height: 1.7;
-            color: #555;
-            font-size: 1.05em;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .post-content.collapsed {
-            max-height: 150px;
-        }
-
-        .post-content.collapsed::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50px;
-            background: linear-gradient(transparent, rgba(255, 255, 255, 0.95));
-            pointer-events: none;
-        }
-
-        .read-more-btn {
-            display: none;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .read-more-btn:hover {
-            background: linear-gradient(135deg, #5a67d8, #6b46c1);
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .read-more-btn.show {
-            display: inline-block;
-        }
-
-        .post-footer {
-            padding-top: 20px;
-            border-top: 2px solid rgba(0, 0, 0, 0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .likes {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 8px 12px;
-            border-radius: 20px;
-            background: rgba(102, 126, 234, 0.1);
-            font-weight: 600;
-        }
-
-        .likes:hover {
-            background: rgba(231, 76, 60, 0.15);
-            color: #e74c3c;
-            transform: scale(1.05);
-        }
-
-        .time {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .empty-state {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            padding: 80px 20px;
-        }
-
-        .empty-state h2 {
-            font-size: 2em;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .empty-state p {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-
-        .empty-state a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: underline;
-            font-weight: 500;
-        }
-
-        .toggle-form-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.8em;
-            cursor: pointer;
-            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .toggle-form-btn:hover {
-            transform: scale(1.15) rotate(180deg);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.5);
-        }
-
-        .form-hidden {
-            display: none;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .posts-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .header h1 {
-                font-size: 2.2em;
-            }
-
-            .search-form {
-                flex-direction: column;
-                border-radius: 20px;
-            }
-
-            .search-box {
-                border-radius: 0;
-            }
-
-            .search-btn {
-                border-radius: 0;
-            }
-
-            .ai-form {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .stats-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .container {
-                padding: 0 10px;
-            }
-
-            .toggle-form-btn {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .post-card {
-                padding: 20px;
-            }
-
-            .add-post-container, .ai-container {
-                padding: 25px;
-                margin: 20px 10px;
-            }
-        }
-        .post-card {
-    background: rgba(255, 255, 255, 0.15); /* лёгкая прозрачность */
-    backdrop-filter: blur(12px); /* эффект стекла */
-    -webkit-backdrop-filter: blur(12px); /* для Safari */
-    border-radius: 20px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.3); /* прозрачная рамка */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.post-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✨ Посты сообщества</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>✨ Посты сообщества</h1>
-            <p>Красивое отображение ваших постов с ИИ помощником</p>
-        </div>
+  <div class="container">
+    <header class="header">
+      <h1>✨ Посты сообщества</h1>
+      <p>Красивое отображение ваших постов с ИИ помощником</p>
+      <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
+    </header>
 
-        <!-- Статистика -->
-        <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-number">{{ posts_list|length }}</div>
-                <div class="stat-label">Постов</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">🤖</div>
-                <div class="stat-label">ИИ Помощник</div>
-            </div>
-        </div>
+    <!-- Поиск -->
+    <section class="search-section">
+      <form method="get" class="search-form">
+        <input type="text" name="query" value="{{ query }}" placeholder="Поиск по заголовку или содержанию..." />
+        <button type="submit">🔍 Найти</button>
+      </form>
+    </section>
 
-        <!-- Форма поиска -->
-        <div class="search-container">
-            <form method="get" class="search-form">
-                <input type="text"
-                       class="search-box"
-                       name="query"
-                       value="{{ query }}"
-                       placeholder="Поиск по заголовку или содержанию...">
-                <button type="submit" class="search-btn">🔍 Найти</button>
-            </form>
-        </div>
+    <!-- ИИ помощник -->
+    <section class="ai-section">
+      <h2>🤖 ИИ Помощник</h2>
+      <form id="ai-form">
+        <input type="text" id="ai-message" placeholder="Спросите что-нибудь у ИИ..." required />
+        <button type="submit">Отправить</button>
+      </form>
+      <div id="ai-response" class="ai-response"></div>
+    </section>
 
-        <!-- ИИ помощник -->
-        <div class="ai-container">
-            <div class="ai-title">
-                🤖 ИИ Помощник
-            </div>
-            <form id="ai-form" class="ai-form">
-                <input type="text" id="ai-message" class="ai-input" placeholder="Спросите что-нибудь у ИИ..." required>
-                <button type="submit" id="ai-submit" class="ai-submit-btn">Отправить</button>
-            </form>
-            <div id="ai-response" class="ai-response"></div>
-        </div>
+    <!-- Добавление поста -->
+    <section class="add-post-section form-hidden" id="addPostForm">
+      <h2>✍️ Добавить новый пост</h2>
+      <form method="post">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Заголовок поста" required />
+        <textarea name="text" placeholder="Содержание поста..." required></textarea>
+        <button type="submit">📝 Опубликовать</button>
+      </form>
+    </section>
 
-        <!-- Форма добавления поста -->
-        <div class="add-post-container form-hidden" id="addPostForm">
-            <div class="add-post-title">✍️ Добавить новый пост</div>
-            <form method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="form-label" for="title">Заголовок:</label>
-                    <input type="text" class="form-input" name="title" id="title" placeholder="Введите заголовок поста" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="text">Содержание:</label>
-                    <textarea class="form-input form-textarea" name="text" id="text" placeholder="Напишите ваш пост..." required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">📝 Опубликовать пост</button>
-            </form>
-        </div>
+    <!-- Посты -->
+    <section class="posts-grid">
+      {% for post in posts_list %}
+      <article class="post-card">
+        <h3>{{ post.title }}</h3>
+        <p class="post-content collapsed" id="content-{{ forloop.counter }}">{{ post.text|linebreaks }}</p>
+        <button onclick="toggleReadMore({{ forloop.counter }})" class="read-more-btn">Читать далее</button>
+        <footer class="post-footer">
+          <span class="likes" onclick="toggleLike(this)">❤️ <span>0</span></span>
+          <span class="time">
+            {% if post.created_at %}
+              {{ post.created_at|timesince }} назад
+            {% else %}
+              Недавно
+            {% endif %}
+          </span>
+        </footer>
+      </article>
+      {% empty %}
+      <div class="empty-state">
+        {% if query %}
+          <h2>🔍 Ничего не найдено</h2>
+          <p>По запросу "{{ query }}" постов не найдено</p>
+        {% else %}
+          <h2>🎉 Добро пожаловать!</h2>
+          <p>Пока нет постов — добавьте первый!</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </section>
 
-        <!-- Посты -->
-        <div class="posts-grid" id="postsContainer">
-            {% for post in posts_list %}
-            <div class="post-card">
-                <div class="post-title">{{ post.title }}</div>
-                <div class="post-content" id="content-{{ forloop.counter }}">{{ post.text|linebreaks }}</div>
-                <button class="read-more-btn" id="btn-{{ forloop.counter }}" onclick="toggleReadMore({{ forloop.counter }})">
-                    Читать далее
-                </button>
-                <div class="post-footer">
-                    <div class="likes" onclick="toggleLike(this)">
-                        ❤️ <span>0</span>
-                    </div>
-                    <div class="time">
-                        {% if post.created_at %}
-                            {{ post.created_at|timesince }} назад
-                        {% else %}
-                            Недавно
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="empty-state">
-                {% if query %}
-                    <h2>🔍 Ничего не найдено</h2>
-                    <p>По запросу "{{ query }}" постов не найдено</p>
-                    <p><a href="{% url 'posts' %}">Показать все посты</a></p>
-                {% else %}
-                    <h2>🎉 Добро пожаловать!</h2>
-                    <p>Пока нет постов, но вы можете стать первым!</p>
-                    <p>Нажмите на кнопку ниже, чтобы добавить пост</p>
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
+    <button class="toggle-form-btn" onclick="toggleAddForm()">✏️</button>
+  </div>
 
-        <!-- Кнопка для показа/скрытия формы -->
-        <button class="toggle-form-btn" onclick="toggleAddForm()" title="Добавить пост">✏️</button>
-    </div>
-
-<script>
-    const aiForm = document.getElementById('ai-form');
-    const aiInput = document.getElementById('ai-message');
-    const aiResponse = document.getElementById('ai-response');
-    const aiSubmit = document.getElementById('ai-submit');
-
-    if (aiForm) {
-        aiForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const message = aiInput.value.trim();
-            if (!message) return;
-
-            // Показываем состояние загрузки
-            aiResponse.className = 'ai-response loading show';
-            aiResponse.textContent = 'Обрабатываю запрос...';
-
-            try {
-                const res = await fetch('/ai-chat/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message: message })
-                });
-
-                const data = await res.json();
-
-                if (data.success) {
-                    aiResponse.className = 'ai-response show';
-                    aiResponse.textContent = data.response;
-                } else {
-                    aiResponse.className = 'ai-response error show';
-                    aiResponse.textContent = 'Ошибка: ' + data.error;
-                }
-            } catch (err) {
-                aiResponse.className = 'ai-response error show';
-                aiResponse.textContent = 'Ошибка соединения с сервером.';
-            }
-
-            aiInput.value = '';
-        });
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
     }
-</script>
+
+    function toggleAddForm() {
+      const form = document.getElementById('addPostForm');
+      form.classList.toggle('form-hidden');
+    }
+
+    function toggleLike(el) {
+      const span = el.querySelector('span');
+      let count = parseInt(span.textContent);
+      count = count === 0 ? 1 : 0;
+      span.textContent = count;
+      el.style.color = count > 0 ? '#e74c3c' : '#666';
+    }
+
+    function toggleReadMore(id) {
+      const content = document.getElementById(`content-${id}`);
+      const btn = content.nextElementSibling;
+      content.classList.toggle('collapsed');
+      btn.textContent = content.classList.contains('collapsed') ? 'Читать далее' : 'Скрыть';
+    }
+
+    document.getElementById('ai-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const input = document.getElementById('ai-message');
+      const responseBox = document.getElementById('ai-response');
+      const message = input.value.trim();
+      if (!message) return;
+
+      responseBox.className = 'ai-response loading';
+      responseBox.textContent = 'Обрабатываю запрос...';
+
+      try {
+        const res = await fetch('/ai-chat/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
+        const data = await res.json();
+        responseBox.className = 'ai-response';
+        responseBox.textContent = data.success ? data.response : 'Ошибка: ' + data.error;
+      } catch {
+        responseBox.className = 'ai-response error';
+        responseBox.textContent = 'Ошибка соединения с сервером.';
+      }
+
+      input.value = '';
+    });
+  </script>
+</body>
+</html>
