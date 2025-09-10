@@ -581,6 +581,25 @@ text-align: center;
                 margin: 20px 10px;
             }
         }
+        .post-card {
+    background: rgba(255, 255, 255, 0.15); /* лёгкая прозрачность */
+    backdrop-filter: blur(12px); /* эффект стекла */
+    -webkit-backdrop-filter: blur(12px); /* для Safari */
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* прозрачная рамка */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
     </style>
 </head>
 <body>
