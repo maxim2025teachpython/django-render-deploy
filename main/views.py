@@ -14,6 +14,8 @@ from django.views.generic import DetailView
 
 logger = logging.getLogger(__name__)
 
+def home(request):
+    return render(request, 'home.html')
 
 class PostDetailView(DetailView):
     model = Post
