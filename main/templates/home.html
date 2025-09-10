@@ -1,142 +1,26 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>✨ Dota2: the all about world of Dota</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-</head>
+{% extends 'base.html' %}
+{% block content %}
+<section class="welcome-section">
+  <h2>👋 Добро пожаловать в мир Dota 2!</h2>
+  <p>Здесь ты найдёшь всё: от героев и предметов до гайдов и контр-пиков. Исследуй, учись и побеждай!</p>
 
-
-<body>
-<nav class="main-nav">
-  <a href="/">Главная</a>
-  <a href="/heroes/">Герои</a>
-  <a href="/items/">Предметы</a>
-  <a href="/guides/">Гайды по Dota</a>
-  <a href="/counters/">Контр-пики</a>
-</nav>
-  <div class="container">
-    <header class="header">
-      <h1>✨ Dota 2</h1>
-      <p>All abot Dota2 world</p>
-      <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
-    </header>
-
-    <!-- Поиск -->
-    <section class="search-section">
-      <form method="get" class="search-form">
-        <input type="text" name="query" value="{{ query }}" placeholder="Поиск по заголовку или содержанию..." />
-        <button type="submit">🔍 Найти</button>
-      </form>
-    </section>
-
-    <!-- ИИ помощник -->
-    <section class="ai-section">
-      <h2>🤖 ИИ Помощник</h2>
-      <form id="ai-form">
-        <input type="text" id="ai-message" placeholder="Спросите что-нибудь у ИИ..." required />
-        <button type="submit">Отправить</button>
-      </form>
-      <div id="ai-response" class="ai-response"></div>
-    </section>
-
-
-
-    <!-- Посты -->
-    <section class="posts-grid">
-      {% for post in posts_list %}
-      <article class="post-card">
-        <h3>{{ post.title }}</h3>
-        <p class="post-content" id="content-{{ forloop.counter }}">
-  {% if post.text|length > 300 %}
-    {{ post.text|slice:":300" }}...
-    <button onclick="this.parentElement.innerHTML = '{{ post.text|escapejs|linebreaksbr }}';" class="read-more-btn">Читать далее</button>
-  {% else %}
-    {{ post.text|linebreaks }}
-  {% endif %}
-</p>
-
-        <footer class="post-footer">
-          <span class="likes" onclick="toggleLike(this)">❤️ <span>0</span></span>
-          <span class="time">
-            {% if post.created_at %}
-              {{ post.created_at|timesince }} назад
-            {% else %}
-              Недавно
-            {% endif %}
-          </span>
-        </footer>
-      </article>
-      {% empty %}
-      <div class="empty-state">
-        {% if query %}
-          <h2>🔍 Ничего не найдено</h2>
-          <p>По запросу "{{ query }}" постов не найдено</p>
-        {% else %}
-          <h2>🎉 Добро пожаловать!</h2>
-          <p>Пока нет постов — добавьте первый!</p>
-        {% endif %}
-      </div>
-      {% endfor %}
-    </section>
-
-    <button class="toggle-form-btn" onclick="toggleAddForm()">✏️</button>
+  <div class="home-links">
+    <a href="{% url 'heroes' %}" class="home-card">
+      <h3>🧙 Герои</h3>
+      <p>Описание, роли, способности и лучшие стратегии.</p>
+    </a>
+    <a href="{% url 'items' %}" class="home-card">
+      <h3>🛡️ Предметы</h3>
+      <p>Все артефакты: от саппортов до керри.</p>
+    </a>
+    <a href="{% url 'guides' %}" class="home-card">
+      <h3>📘 Гайды</h3>
+      <p>Полезные советы, билды и механики игры.</p>
+    </a>
+    <a href="{% url 'counters' %}" class="home-card">
+      <h3>⚔️ Контр-пики</h3>
+      <p>Кого брать против кого? Контр-стратегии и мета.</p>
+    </a>
   </div>
-
-  <script>
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-    }
-
-    function toggleAddForm() {
-      const form = document.getElementById('addPostForm');
-      form.classList.toggle('form-hidden');
-    }
-
-    function toggleLike(el) {
-      const span = el.querySelector('span');
-      let count = parseInt(span.textContent);
-      count = count === 0 ? 1 : 0;
-      span.textContent = count;
-      el.style.color = count > 0 ? '#e74c3c' : '#666';
-    }
-
-    function toggleReadMore(id) {
-      const content = document.getElementById(`content-${id}`);
-      const btn = content.nextElementSibling;
-      content.classList.toggle('collapsed');
-      btn.textContent = content.classList.contains('collapsed') ? 'Читать далее' : 'Скрыть';
-    }
-
-    document.getElementById('ai-form').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const input = document.getElementById('ai-message');
-      const responseBox = document.getElementById('ai-response');
-      const message = input.value.trim();
-      if (!message) return;
-
-      responseBox.className = 'ai-response loading';
-      responseBox.textContent = 'Обрабатываю запрос...';
-
-      try {
-        const res = await fetch('/ai-chat/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message })
-        });
-        const data = await res.json();
-        responseBox.className = 'ai-response';
-        responseBox.textContent = data.success ? data.response : 'Ошибка: ' + data.error;
-      } catch {
-        responseBox.className = 'ai-response error';
-        responseBox.textContent = 'Ошибка соединения с сервером.';
-      }
-
-      input.value = '';
-    });
-  </script>
-</body>
-</html>
+</section>
+{% endblock %}
