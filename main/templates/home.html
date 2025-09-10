@@ -34,16 +34,7 @@
       <div id="ai-response" class="ai-response"></div>
     </section>
 
-    <!-- Добавление поста -->
-    <section class="add-post-section form-hidden" id="addPostForm">
-      <h2>✍️ Добавить новый пост</h2>
-      <form method="post">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="Заголовок поста" required />
-        <textarea name="text" placeholder="Содержание поста..." required></textarea>
-        <button type="submit">📝 Опубликовать</button>
-      </form>
-    </section>
+
 
     <!-- Посты -->
     <section class="posts-grid">
