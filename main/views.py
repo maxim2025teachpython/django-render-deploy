@@ -135,3 +135,21 @@ def ai_chat(request):
             'success': False,
             'error': 'Поддерживается только POST запрос'
         })
+
+    '''divide on the main page'''
+
+
+def heroes(request):
+    return render(request, 'heroes.html')
+
+
+def items(request):
+    return render(request, 'items.html')
+
+
+def guides(request):
+    return render(request, 'guides.html')
+
+
+def counters(request):
+    return render(request, 'counters.html')
