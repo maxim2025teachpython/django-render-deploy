@@ -51,13 +51,14 @@
       <article class="post-card">
         <h3>{{ post.title }}</h3>
         <p class="post-content" id="content-{{ forloop.counter }}">
-          {% if post.text|length > 300 %}
-            <span class="text-preview">{{ post.text|slice:":300" }}...</span>
-            <button class="read-more-btn" onclick="expandText(this, '{{ post.text|escapejs|linebreaksbr }}')">Читать далее</button>
-          {% else %}
-            {{ post.text|linebreaks }}
-          {% endif %}
-        </p>
+  {% if post.text|length > 300 %}
+    {{ post.text|slice:":300" }}...
+    <button onclick="this.parentElement.innerHTML = '{{ post.text|escapejs|linebreaksbr }}';" class="read-more-btn">Читать далее</button>
+  {% else %}
+    {{ post.text|linebreaks }}
+  {% endif %}
+</p>
+
         <footer class="post-footer">
           <span class="likes" onclick="toggleLike(this)">❤️ <span>0</span></span>
           <span class="time">
@@ -103,10 +104,11 @@
       el.style.color = count > 0 ? '#e74c3c' : '#666';
     }
 
-    function expandText(button, fullText) {
-      const preview = button.previousElementSibling;
-      preview.innerHTML = fullText;
-      button.remove();
+    function toggleReadMore(id) {
+      const content = document.getElementById(`content-${id}`);
+      const btn = content.nextElementSibling;
+      content.classList.toggle('collapsed');
+      btn.textContent = content.classList.contains('collapsed') ? 'Читать далее' : 'Скрыть';
     }
 
     document.getElementById('ai-form').addEventListener('submit', async function (e) {
