@@ -22,5 +22,66 @@
       <p>Кого брать против кого? Контр-стратегии и мета.</p>
     </a>
   </div>
+
+  {% if ai_available %}
+  <section class="ai-section">
+    <h2>🤖 ИИ-помощник</h2>
+    <p>Задай вопрос, и я постараюсь помочь!</p>
+    <textarea id="ai-message" placeholder="Напиши свой вопрос..." rows="4" cols="50"></textarea><br>
+    <button onclick="sendToAI()">Отправить</button>
+    <div id="ai-response" class="ai-response"></div>
+  </section>
+  {% else %}
+    <p style="color: gray;">ИИ-помощник временно недоступен.</p>
+  {% endif %}
 </section>
+
+<script>
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+function sendToAI() {
+  const message = document.getElementById('ai-message').value;
+  const responseDiv = document.getElementById('ai-response');
+
+  responseDiv.className = 'ai-response loading';
+  responseDiv.innerText = '⏳ Обрабатываю...';
+
+  fetch('/ai_chat/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')
+    },
+    body: JSON.stringify({ message: message })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      responseDiv.className = 'ai-response';
+      responseDiv.innerText = data.response;
+    } else {
+      responseDiv.className = 'ai-response error';
+      responseDiv.innerText = '⚠️ Ошибка: ' + data.error;
+    }
+  })
+  .catch(error => {
+    responseDiv.className = 'ai-response error';
+    responseDiv.innerText = '⚠️ Ошибка при отправке запроса.';
+    console.error(error);
+  });
+}
+</script>
 {% endblock %}
